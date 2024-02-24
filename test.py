@@ -19,8 +19,8 @@ headers = {
 data = {
     "app": "3",
     "record": {
-        "Field1": {"value": "Value1"},
-        "Field2": {"value": "Value2"},
+        "test1": {"value": "dsjfjd"},
+        "test2": {"value": "dsafa"},
         # Add more fields as needed
     }
 }
