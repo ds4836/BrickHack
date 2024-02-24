@@ -4,7 +4,7 @@ import requests
 base_url = "https://jlukasmay.kintone.com"
 
 # Define the API token
-api_token = "<your_api_token>"
+api_token = "VYSaXkOJ3QITu4pRPxEUzhv9SH2lBqTxvsqfJZSb"
 
 # Define the endpoint URL to create a record
 endpoint = f"{base_url}/k/v1/record.json"
@@ -17,7 +17,7 @@ headers = {
 
 # Define the data to be inputted
 data = {
-    "app": "<your_app_id>",
+    "app": "3",
     "record": {
         "Field1": {"value": "Value1"},
         "Field2": {"value": "Value2"},
