@@ -5,13 +5,9 @@ def confirm_file_path():
     file_path = file_path_entry.get()
     print("File path:", file_path)
 
-def confirm_field1():
+def confirm_fields():
     input1 = input_entry1.get()
     print("Input 1:", input1)
-
-def confirm_field2():
-    input2 = input_entry2.get()
-    print("Input 2:", input2)
 
 def change_frame():
     global input_entry1, input_entry2
@@ -19,22 +15,41 @@ def change_frame():
         widget.destroy()
 
     new_frame = tk.Frame(root)
+    
+    checkbox_var1 = tk.IntVar()
+    checkbox_var2 = tk.IntVar()
+    checkbox_var3 = tk.IntVar()
+    checkbox_var4 = tk.IntVar()
 
+    checkbox_label = tk.Label(new_frame, text="Checkboxes:")
+    checkbox_label.pack()
+
+    checkbox1 = tk.Checkbutton(new_frame, text="Checkbox 1", variable=checkbox_var1)
+    checkbox1.pack()
+    checkbox2 = tk.Checkbutton(new_frame, text="Checkbox 2", variable=checkbox_var2)
+    checkbox2.pack()
+    checkbox3 = tk.Checkbutton(new_frame, text="Checkbox 3", variable=checkbox_var3)
+    checkbox3.pack()
+    checkbox4 = tk.Checkbutton(new_frame, text="Checkbox 4", variable=checkbox_var4)
+    checkbox4.pack()
+
+    int_input_label = tk.Label(new_frame, text="Integer Input:")
+    int_input_label.pack()
+    int_input_entry = tk.Entry(new_frame)
+    int_input_entry.pack()
     input_label1 = tk.Label(new_frame, text="Input 1:")
     input_label1.pack()
     input_entry1 = tk.Entry(new_frame)
     input_entry1.pack()
 
-    confirm_button1 = tk.Button(new_frame, text="Confirm1", command=confirm_field1)
-    confirm_button1.pack()
 
     input_label2 = tk.Label(new_frame, text="Input 2:")
     input_label2.pack()
     input_entry2 = tk.Entry(new_frame)
     input_entry2.pack()
 
-    confirm_button2 = tk.Button(new_frame, text="Confirm2", command=confirm_field2)
-    confirm_button2.pack()
+    confirm_button = tk.Button(new_frame, text="Confirm2", command=confirm_fields)
+    confirm_button.pack()
 
     
 
