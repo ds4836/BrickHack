@@ -17,30 +17,29 @@ headers = {
 }
 
 # Define the data to be inputted
-data = {
-    "app": "3",
-    "record": {
-        "test1": {"value": "dsjfjd"},
-        "test2": {"value": "dsafa"},
-        "number": {"value": "134"},
-        "multiChoice": {"value": ["sample1", "sample2", "sample3", "sample4"]},
-    }
-}
+# data = {
+#     "app": "3",
+#     "record": {
+#         "test1": {"value": "dsjfjd"},
+#         "test2": {"value": "dsafa"},
+#         "number": {"value": "134"},
+#         "multiChoice": {"value": ["sample1", "sample2", "sample3", "sample4"]},
+#     }
+# }
+def post_data(data):
+    try:
+        # Send POST request to create a record
+        response = requests.post(endpoint, headers=headers, json=data)
 
-# try:
-#     # Send POST request to create a record
-#     response = requests.post(endpoint, headers=headers, json=data)
+        # Check if request was successful (status code 200)
+        if response.status_code == 200:
+            print("Record created successfully!")
+        else:
+            print("Failed to create record. Status code:", response.status_code)
 
-#     # Check if request was successful (status code 200)
-#     if response.status_code == 200:
-#         print("Record created successfully!")
-#     else:
-#         print("Failed to create record. Status code:", response.status_code)
+    except requests.RequestException as e:
+        print("Error creating record:", e)
 
-# except requests.RequestException as e:
-#     print("Error creating record:", e)
-
-endpoint = f"{base_url}/k/v1/records.json?app=1"
 
 def parse_csv(file_path):
     with open(file_path) as file:

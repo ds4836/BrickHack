@@ -1,16 +1,37 @@
 import tkinter as tk
 from tkinter import filedialog
 
+from test import parse_csv, post_data
+
 def confirm_file_path():
-    file_path = file_path_entry.get()
-    print("File path:", file_path)
+    parse_csv(file_path_entry.get())
+    
 
 def confirm_fields():
-    input1 = input_entry1.get()
-    print("Input 1:", input1)
+    checkbox_values = []
+    if checkbox_var1.get():
+        checkbox_values.append("sample1")
+    if checkbox_var2.get():
+        checkbox_values.append("sample2")
+    if checkbox_var3.get():
+        checkbox_values.append("sample3")
+    if checkbox_var4.get():
+        checkbox_values.append("sample4")
+
+    data = {
+        "app": "3",
+        "record": {
+            "test1": {"value": input_entry1.get()},
+            "test2": {"value": input_entry2.get()},
+            "number": {"value": int_input_entry.get()},
+            "multiChoice": {"value": checkbox_values},
+        }
+    }
+    post_data(data)
+
 
 def change_frame():
-    global input_entry1, input_entry2
+    global input_entry1, input_entry2, checkbox1, checkbox2, checkbox3, checkbox4, int_input_entry, checkbox_var1, checkbox_var2, checkbox_var3, checkbox_var4
     for widget in root.winfo_children():
         widget.destroy()
 
