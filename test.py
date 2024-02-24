@@ -1,4 +1,5 @@
 import requests
+import csv
 
 # Define the base URL for the Kintone API
 base_url = "https://jlukasmay.kintone.com"
@@ -40,6 +41,22 @@ data = {
 #     print("Error creating record:", e)
 
 endpoint = f"{base_url}/k/v1/records.json?app=1"
+
+def parse_csv(file_path):
+    with open(file_path) as file:
+        reader = csv.DictReader(file)
+        records = list(reader)
+
+        for record in records:
+            data = {
+                'app': '3',
+                'record': record
+            }
+            response = requests.post(endpoint, headers=headers, json=data)
+            if response.status_code == 200:
+                print("Record created successfully!")
+            else:
+                print("Failed to create record. Status code:", response.status_code)
 
 try:
     # Send GET request to retrieve records
