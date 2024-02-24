@@ -1,7 +1,7 @@
 import requests
 
 # Define the base URL for the Kintone API
-base_url = "http://jlukasmay.kintone.com"
+base_url = "https://jlukasmay.kintone.com"
 
 # Define the API token
 api_token = "VYSaXkOJ3QITu4pRPxEUzhv9SH2lBqTxvsqfJZSb"
