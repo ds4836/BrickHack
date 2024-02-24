@@ -21,7 +21,8 @@ data = {
     "record": {
         "test1": {"value": "dsjfjd"},
         "test2": {"value": "dsafa"},
-        # Add more fields as needed
+        "number": {"value": "134"},
+        "multiChoice": {"value": ["sample1", "sample2", "sample3", "sample4"]},
     }
 }
 
