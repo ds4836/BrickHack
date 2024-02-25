@@ -74,10 +74,11 @@ def parse_csv(file_path):
             
 def get_question():
     data = get_data()
-    rand = random.randint(0, len(data.get('records')))
+    rand = random.randrange(0, len(data.get('records')))
     question = data.get('records')[rand].get('question').get('value')
     option1 = data.get('records')[rand].get('option1').get('value')
     option2 = data.get('records')[rand].get('option2').get('value')
     option3 = data.get('records')[rand].get('option3').get('value')
     option4 = data.get('records')[rand].get('option4').get('value')
-    return (question, option1, option2, option3, option4)
+    correct = data.get('records')[rand].get('correct').get('value')
+    return (question, option1, option2, option3, option4, correct)
