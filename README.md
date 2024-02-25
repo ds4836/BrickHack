@@ -1,6 +1,6 @@
 # Quiz Application with Kintone Integration
 
-This is a Python quiz application that integrates with the Kintone platform for managing quiz questions. It allows users to add quiz questions via a CSV file, take quizzes with randomized questions, and track quiz results.
+This is a Python quiz application that integrates with the Kintone platform for managing quiz questions. It allows users to add quiz questions via a menu, take quizzes with randomized questions, and track quiz results.
 
 ## Files
 
@@ -10,7 +10,7 @@ This file contains the main logic for the quiz application. It utilizes the Tkin
 
 ### `api.py`
 
-This file contains functions for interacting with the Kintone API. It includes functions for posting data (questions) to Kintone, retrieving data (questions) from Kintone, parsing CSV files containing questions, and managing quiz questions.
+This file contains functions for interacting with the Kintone API. It includes functions for posting data (questions) to Kintone, retrieving data (questions) from Kintone, and managing quiz questions.
 
 ## Functionality
 
@@ -40,4 +40,3 @@ This file contains functions for interacting with the Kintone API. It includes f
 ## Notes
 
 - Ensure that you have a stable internet connection to access the Kintone API for retrieving and posting quiz questions.
-- Make sure that the CSV file containing questions is correctly formatted with columns for question text, options, and correct answers.
