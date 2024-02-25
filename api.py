@@ -4,31 +4,33 @@ import random
 
 # Universal variables
 base_url = "https://jlukasmay.kintone.com"
-api_token = "VYSaXkOJ3QITu4pRPxEUzhv9SH2lBqTxvsqfJZSb"
+quiz_api_token = "VYSaXkOJ3QITu4pRPxEUzhv9SH2lBqTxvsqfJZSb"
+user_api_token = "E00ZFyb7RKwcUXXQeR8DZU2fjGkp2WBgIYWfZMIE"
 post_endpoint = f"{base_url}/k/v1/record.json"
 get_all_endpoint = f"{base_url}/k/v1/records.json"
-app_id = "3"
+quiz_app_id = "3"
+user_app_id = "5"
 
 
 # Headers for API requests
 post_headers = {
     "Content-Type": "application/json",
-    "X-Cybozu-API-Token": api_token,
+    "X-Cybozu-API-Token": quiz_api_token,
 }
 
 get_headers = {
-    "X-Cybozu-API-Token": api_token,
+    "X-Cybozu-API-Token": quiz_api_token,
 }
 
 # Param defaults for API requests
 params = {
-    "app": app_id,
+    "app": quiz_app_id,
 }
 
-def post_data(data):
+def post_data(data, endpoint=post_endpoint, headers=post_headers):
     try:
         # Send POST request to create a record
-        response = requests.post(post_endpoint, headers=post_headers, json=data)
+        response = requests.post(endpoint, headers=headers, json=data)
 
         # Check if request was successful (status code 200)
         if response.status_code == 200:
