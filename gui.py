@@ -6,26 +6,18 @@ from api import parse_csv, post_data, get_question
 import tkinter as tk
 global correct_answer
 correct_answer = "D"
-def check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, checkbox1, checkbox2, checkbox3, checkbox4, label):
-        global correct_answer
-        result = False
-        if correct_answer == "A" and checkbox1var.get() == 1:
-            result = True
-        elif correct_answer == "B" and checkbox2var.get() == 1:
-            result = True
-        elif correct_answer == "C" and checkbox3var.get() == 1:
-            result = True
-        elif correct_answer == "D" and checkbox4var.get() == 1:
-            result = True
-        if result:
-            question = get_question()
-            label.config(text=question[0])
-            checkbox1.config(text=question[1])
-            checkbox2.config(text=question[2])
-            checkbox3.config(text=question[3])
-            checkbox4.config(text=question[4])
-            correct_answer = question[5]
-        print(correct_answer)
+def check_answer(selected_option, label, radio_buttons):
+    global correct_answer
+    result = False
+    if correct_answer == selected_option.get():
+        result = True
+    if result:
+        question = get_question()
+        label.config(text=question[0])
+        for i in range(4):  # Update the text of the radio buttons
+            radio_buttons[i].config(text=question[i+1])
+        correct_answer = question[5]
+    print(correct_answer)
 
 def add_question(textbox1, textbox2, textbox3, textbox4, textbox5, textbox6):
     data = {
@@ -103,24 +95,18 @@ class GUI(tk.Tk):
         
         label = tk.Label(guessing_frame, text=question[0])  # Create a label
         label.pack()  # Pack the label at the top of the frame
-        checkbox1var = tk.IntVar()
-        checkbox2var = tk.IntVar()
-        checkbox3var = tk.IntVar()
-        checkbox4var = tk.IntVar()
-        
-        checkbox1 = tk.Checkbutton(guessing_frame, text=question[1], variable=checkbox1var)
-        checkbox1.pack()
-        
-        checkbox2 = tk.Checkbutton(guessing_frame, text=question[2], variable=checkbox2var)
-        checkbox2.pack()
-        
-        checkbox3 = tk.Checkbutton(guessing_frame, text=question[3], variable=checkbox3var)
-        checkbox3.pack()
-        
-        checkbox4 = tk.Checkbutton(guessing_frame, text=question[4], variable=checkbox4var)
-        checkbox4.pack()
+
+        selected_option = tk.StringVar()  # Create a variable to store the selected option
+
+        radio_buttons = []  # Create a list to store the radio buttons
+
+        for i in range(1, 5):  # Create 4 radio buttons
+            radio_button = tk.Radiobutton(guessing_frame, text=question[i], variable=selected_option, value=chr(64 + i))
+            radio_button.pack()
+            radio_buttons.append(radio_button)  # Add the radio button to the list
+
         correct_answer = question[5]
-        button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, checkbox1, checkbox2, checkbox3, checkbox4, label))
+        button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(selected_option, label, radio_buttons))
         button.pack()
 
         back_button = tk.Button(guessing_frame, text="Back to Main", command=lambda: self.show_frame("main"))
