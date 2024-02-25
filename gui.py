@@ -103,7 +103,7 @@ def add_question(textbox1, textbox2, textbox3, textbox4, textbox5, textbox6):
 class GUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("GUI")
+        self.title("Kintone Trivia")
         self.geometry("800x600")
 
         self.grid_columnconfigure(0, weight=1)
@@ -122,8 +122,8 @@ class GUI(tk.Tk):
         main_frame = tk.Frame(self)
 
         if label_text == None:
-            label_text = "Welcome to the Quiz!"
-        self.main_label = tk.Label(main_frame, text=label_text, font=("Arial", 16))  # Increase the font size
+            label_text = "Welcome to the Kintone Trivia Quiz!"
+        self.main_label = tk.Label(main_frame, text=label_text, font=("Courier New", 20))  # Increase the font size
         self.main_label.pack()
 
         button1 = tk.Button(main_frame, text="Add questions", command=lambda: self.show_frame("input_frame"))
@@ -144,7 +144,7 @@ class GUI(tk.Tk):
         textboxes = []  # Create a list to store the textboxes
         text_fields = ["Question", "Option 1", "Option 2", "Option 3", "Option 4", "Correct Answer"]
         for i in range(6):  # Create 6 text boxes
-            label = tk.Label(input_frame, text=text_fields[i], font=("Arial", 20))  # Increase the font size
+            label = tk.Label(input_frame, text=text_fields[i], font=("Courier New", 20))  # Increase the font size
             label.grid(row=i, column=0)
             textbox = tk.Entry(input_frame)
             textbox.grid(row=i, column=1)
@@ -165,7 +165,7 @@ class GUI(tk.Tk):
 
         question = get_question()
         
-        label = tk.Label(guessing_frame, text=question[0], font=("Arial", 14))  # Increase the font size
+        label = tk.Label(guessing_frame, text=question[0], font=("Courier New", 20))  # Increase the font size
         label.pack(anchor='w')  # Pack the label at the top of the frame
 
 
@@ -201,7 +201,7 @@ class GUI(tk.Tk):
         option_text = ["Unlimited Questions", "Unlimited Guesses", "Randomize Options", "Unique Questions"]
         for i in range(4):  # Create 4 checkboxes
             check_var = tk.IntVar()  # Create a variable for the checkbox
-            checkbox = tk.Checkbutton(quiz_customize_frame, text=option_text[i], variable=check_var, font=("Arial", 14))  # Increase the font size
+            checkbox = tk.Checkbutton(quiz_customize_frame, text=option_text[i], variable=check_var, font=("Courier New", 20))  # Increase the font size
             checkbox.pack(anchor='w')  # Pack the checkbox on the left side of the frame
             self.check_vars.append(check_var)  # Add the variable to the list
 
