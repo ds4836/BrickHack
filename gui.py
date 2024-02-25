@@ -58,6 +58,7 @@ class GUI(tk.Tk):
         self.create_main_frame()
         self.create_input()
         self.create_guess_frame()
+        self.create_quiz_customize()  # Create the quiz customize frame
 
         self.show_frame("main")
         
@@ -74,7 +75,11 @@ class GUI(tk.Tk):
         
         button2 = tk.Button(main_frame, text="Quiz", command=lambda: self.show_frame("guessing_frame"))
         button2.pack()
-        
+
+        # Add a button to customize the quiz
+        button3 = tk.Button(main_frame, text="Customize Quiz", command=lambda: self.show_frame("quiz_customize_frame"))
+        button3.pack()
+
         self.frames["main"] = main_frame
         
     def create_input(self):
@@ -104,7 +109,7 @@ class GUI(tk.Tk):
         question = get_question()
         
         label = tk.Label(guessing_frame, text=question[0])  # Create a label
-        label.pack()  # Pack the label at the top of the frame
+        label.pack(anchor='w')  # Pack the label at the top of the frame
 
         selected_option = tk.StringVar()  # Create a variable to store the selected option
 
@@ -112,18 +117,38 @@ class GUI(tk.Tk):
 
         for i in range(1, 5):  # Create 4 radio buttons
             radio_button = tk.Radiobutton(guessing_frame, text=question[i], variable=selected_option, value=chr(64 + i))
-            radio_button.pack()
+            radio_button.pack(anchor='w')  # Pack the radio button on the left side of the frame
             radio_buttons.append(radio_button)  # Add the radio button to the list
 
         correct_answer = question[5]
-        button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(selected_option, label, radio_buttons))
-        button.pack()
 
-        back_button = tk.Button(guessing_frame, text="End Quiz", command=lambda: self.end_quiz())
-        back_button.pack()
+        # Create a frame to contain the buttons
+        button_frame = tk.Frame(guessing_frame)
+        button_frame.pack(anchor='w')
+
+        button = tk.Button(button_frame, text="Check", command=lambda: check_answer(selected_option, label, radio_buttons))
+        button.pack(side='left')  # Pack the button on the left side of the button frame
+
+        back_button = tk.Button(button_frame, text="End Quiz", command=lambda: self.end_quiz())
+        back_button.pack(side='left', padx=5)  # Pack the button on the left side of the button frame with a padding of 5 pixels
 
         self.frames["guessing_frame"] = guessing_frame
-        
+
+    def create_quiz_customize(self):
+        quiz_customize_frame = tk.Frame(self)
+
+        self.check_vars = []  # Create a list to store the variables for the checkboxes
+        for i in range(4):  # Create 4 checkboxes
+            check_var = tk.IntVar()  # Create a variable for the checkbox
+            checkbox = tk.Checkbutton(quiz_customize_frame, text=f"Option {i+1}", variable=check_var)
+            checkbox.pack(anchor='w')  # Pack the checkbox on the left side of the frame
+            self.check_vars.append(check_var)  # Add the variable to the list
+
+        back_button = tk.Button(quiz_customize_frame, text="Back to Main", command=lambda: self.show_frame("main"))
+        back_button.pack()
+
+        self.frames["quiz_customize_frame"] = quiz_customize_frame
+
     def show_frame(self, frame_name):
         for frame in self.frames.values():
             frame.grid_remove()  # Hide all frames
