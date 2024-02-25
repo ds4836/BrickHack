@@ -2,20 +2,27 @@ import random
 import tkinter as tk
 from tkinter import filedialog
 
-from api import parse_csv, post_data, get_question
+from api import parse_csv, post_data, get_question, reset_limit_questions
 
 import tkinter as tk
-global correct_answer, total_guesses, correct_guesses, limit_questions
+global correct_answer, total_guesses, correct_guesses
 total_guesses = 0
 correct_guesses = 0
 correct_answer = "D"
-limit_questions = 10
+limit_questions = reset_limit_questions()
 
 def check_answer(selected_option, label, radio_buttons):
     global correct_answer, total_guesses, correct_guesses
     total_guesses += 1
     if correct_answer == selected_option.get():
         correct_guesses += 1
+        question = question_customized()
+        label.config(text=question[0])
+        alpha = ["A) ", "B) ", "C) ", "D) "]
+        for i in range(4):  # Update the text of the radio buttons
+            radio_buttons[i].config(text=alpha[i] + question[i+1])
+        correct_answer = question[5]
+    elif gui.check_vars[1].get() == 0:  # If "Unlimited Guesses" is not checked
         question = question_customized()
         label.config(text=question[0])
         alpha = ["A) ", "B) ", "C) ", "D) "]
@@ -29,9 +36,12 @@ def question_customized():
         limit_questions -= 1
         if limit_questions == 0:
             gui.end_quiz()
-            limit_questions = 10
+            limit_questions = reset_limit_questions()
             return
-    data = list(get_question())
+    if gui.check_vars[3].get() == 1:
+        data = list(get_question(True))
+    else:
+        data = list(get_question())
     question = data[0]
     options = data[1:5]
     correct = data[5]
@@ -179,7 +189,7 @@ class GUI(tk.Tk):
         quiz_customize_frame = tk.Frame(self)
 
         self.check_vars = []  # Create a list to store the variables for the checkboxes
-        option_text = ["Unlimited questions", "unlimited guesses", "Randomize options", ""]
+        option_text = ["Unlimited Questions", "Unlimited Guesses", "Randomize Options", "Unique Questions"]
         for i in range(4):  # Create 4 checkboxes
             check_var = tk.IntVar()  # Create a variable for the checkbox
             checkbox = tk.Checkbutton(quiz_customize_frame, text=option_text[i], variable=check_var)

@@ -72,11 +72,21 @@ def parse_csv(file_path):
         else:
             print("Failed to create record. Status code:", response.status_code)
 
-# parse_csv("/Users/lukasmay/Downloads/New App_20240224T142352-0800.csv")
-            
-def get_question():
+unique_questions = [i for i in range(0, len(get_data().get('records')))]
+
+def reset_limit_questions():
+    return len(get_data().get('records'))
+
+def get_question(unique=False):
+    global unique_questions  # Declare unique_questions as a global variable
     data = get_data()
-    rand = random.randrange(0, len(data.get('records')))
+    if unique:
+        rand = random.choice(unique_questions)
+        unique_questions.remove(rand)
+        if not unique_questions:  # Check if unique_questions is empty
+            unique_questions = [i for i in range(0, len(data.get('records')))]
+    else:
+        rand = random.randrange(0, len(data.get('records')))
     question = data.get('records')[rand].get('question').get('value')
     option1 = data.get('records')[rand].get('option1').get('value')
     option2 = data.get('records')[rand].get('option2').get('value')

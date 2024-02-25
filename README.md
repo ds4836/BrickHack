@@ -1,2 +1,2 @@
 # BrickHack X
-- unique questions
+- set limit of questions
