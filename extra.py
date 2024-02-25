@@ -9,7 +9,7 @@ app_id = "3"
 record_id = "60"
 
 # Define the endpoint URL to create a record
-endpoint = f"{base_url}/k/v1/record.json"
+endpoint = f"{base_url}/k/v1/records.json"
 
 # Define request headers with API token for authentication
 headers = {
@@ -18,7 +18,6 @@ headers = {
 
 params = {
     "app": app_id,
-    "id": record_id,
 }
 
 try:
@@ -26,6 +25,7 @@ try:
     response = requests.get(endpoint, headers=headers, params=params)
 
     # Check if request was successful (status code 200)
+    print("Status code:", response.status_code)
     if response.status_code == 200:
         # Extract data from response JSON
         data = response.json()

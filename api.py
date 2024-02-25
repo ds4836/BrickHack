@@ -4,9 +4,10 @@ import csv
 # Universal variables
 base_url = "https://jlukasmay.kintone.com"
 api_token = "VYSaXkOJ3QITu4pRPxEUzhv9SH2lBqTxvsqfJZSb"
-endpoint = f"{base_url}/k/v1/record.json"
+post_endpoint = f"{base_url}/k/v1/record.json"
+get_all_endpoint = f"{base_url}/k/v1/records.json"
 app_id = "3"
-record_id_default = "60"
+
 
 # Headers for API requests
 post_headers = {
@@ -21,13 +22,12 @@ get_headers = {
 # Param defaults for API requests
 params = {
     "app": app_id,
-    "id": record_id_default,
 }
 
 def post_data(data):
     try:
         # Send POST request to create a record
-        response = requests.post(endpoint, headers=post_headers, json=data)
+        response = requests.post(post_endpoint, headers=post_headers, json=data)
 
         # Check if request was successful (status code 200)
         if response.status_code == 200:
@@ -38,11 +38,14 @@ def post_data(data):
     except requests.RequestException as e:
         print("Error creating record:", e)
 
-def get_data(record_id=record_id_default):
-    params["id"] = record_id
+def get_data(record_id=None):
     try:
         # Send GET request to retrieve records
-        response = requests.get(endpoint, headers=get_headers, params=params)
+        if not record_id == None:
+            params["id"] = record_id
+            response = requests.get(post_endpoint, headers=get_headers, params=params)
+        else:
+            response = requests.get(get_all_endpoint, headers=get_headers)
 
         # Check if request was successful (status code 200)
         if response.status_code == 200:
@@ -60,7 +63,7 @@ def parse_csv(file_path):
     # Convert records to JSON format
     for record in records:
         data = {"app": "3", "records": record}
-        response = requests.post(endpoint, headers=post_headers, json=data)
+        response = requests.post(post_endpoint, headers=post_headers, json=data)
         if response.status_code == 200:
             print("Record created successfully!")
         else:
