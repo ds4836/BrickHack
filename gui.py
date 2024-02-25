@@ -5,7 +5,7 @@ from api import parse_csv, post_data, get_question
 
 import tkinter as tk
 
-def check_answer(self, checkbox1var, checkbox2var, checkbox3var, checkbox4var, correct_answer):
+def check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, correct_answer):
         result = False
         if correct_answer == "A" and checkbox1var.get() == 1:
             result = True
@@ -87,7 +87,7 @@ class GUI(tk.Tk):
         checkbox4 = tk.Checkbutton(guessing_frame, text=question[4], variable=checkbox4var)
         checkbox4.pack()
         
-        button = tk.Button(guessing_frame, text="Submit", command=check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, question[5]))
+        button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, question[5]))
         button.pack()
         
         self.frames["guessing_frame"] = guessing_frame
