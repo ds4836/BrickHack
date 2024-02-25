@@ -11,7 +11,7 @@ correct_guesses = 0
 correct_answer = "D"
 limit_questions = reset_limit_questions()
 
-def check_answer(selected_option, label, radio_buttons):
+def check_answer(selected_option, label, radio_buttons, button):
     global correct_answer, total_guesses, correct_guesses
     total_guesses += 1
     if correct_answer == selected_option.get():
@@ -29,6 +29,12 @@ def check_answer(selected_option, label, radio_buttons):
         for i in range(4):  # Update the text of the radio buttons
             radio_buttons[i].config(text=alpha[i] + question[i+1])
         correct_answer = question[5]
+
+    # Disable the button
+    button.config(state="disabled")
+
+    # Enable the button after 0.2 seconds
+    button.after(200, lambda: button.config(state="normal"))
 
 def question_customized():
     global limit_questions
@@ -177,7 +183,8 @@ class GUI(tk.Tk):
         button_frame = tk.Frame(guessing_frame)
         button_frame.pack(anchor='w')
 
-        button = tk.Button(button_frame, text="Check", command=lambda: check_answer(selected_option, label, radio_buttons))
+        # In the create_guess_frame method
+        button = tk.Button(button_frame, text="Check", command=lambda: check_answer(selected_option, label, radio_buttons, button))
         button.pack(side='left')  # Pack the button on the left side of the button frame
 
         back_button = tk.Button(button_frame, text="End Quiz", command=lambda: self.end_quiz())
