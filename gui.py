@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 
-from test import parse_csv, post_data
+from api import parse_csv, post_data
 
 def confirm_file_path():
     parse_csv(file_path_entry.get())
