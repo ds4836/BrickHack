@@ -105,7 +105,7 @@ class GUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Kintone Trivia")
-        self.geometry("800x600")
+        self.geometry("800x200")
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -125,7 +125,7 @@ class GUI(tk.Tk):
 
         if label_text == None:
             label_text = "Welcome to the Kintone Trivia Quiz!"
-        self.main_label = tk.Label(main_frame, text=label_text, font=("Courier New", 20))  # Increase the font size
+        self.main_label = tk.Label(main_frame, text=label_text, font=("Courier New", 20), wraplength=750, justify=tk.LEFT)  # Increase the font size
         self.main_label.pack()
 
 
@@ -148,7 +148,7 @@ class GUI(tk.Tk):
         textboxes = []  # Create a list to store the textboxes
         text_fields = ["Question", "Option 1", "Option 2", "Option 3", "Option 4", "Correct Answer"]
         for i in range(6):  # Create 6 text boxes
-            label = tk.Label(input_frame, text=text_fields[i], font=("Courier New", 20))  # Increase the font size
+            label = tk.Label(input_frame, text=text_fields[i], font=("Courier New", 20), wraplength=750, justify=tk.LEFT)  # Increase the font size
             label.grid(row=i, column=0)
             textbox = tk.Entry(input_frame)
             textbox.grid(row=i, column=1)
@@ -170,7 +170,7 @@ class GUI(tk.Tk):
 
         question = get_question()
         
-        label = tk.Label(guessing_frame, text=question[0], font=("Courier New", 20))  # Increase the font size
+        label = tk.Label(guessing_frame, text=question[0], font=("Courier New", 20), wraplength=750, justify=tk.LEFT)  # Increase the font size
         label.pack(anchor='w')  # Pack the label at the top of the frame
 
 
