@@ -3,102 +3,83 @@ from tkinter import filedialog
 
 from api import parse_csv, post_data
 
-def confirm_file_path():
-    parse_csv(file_path_entry.get())
-    
+import tkinter as tk
 
-def confirm_fields():
-    checkbox_values = []
-    if checkbox_var1.get():
-        checkbox_values.append("sample1")
-    if checkbox_var2.get():
-        checkbox_values.append("sample2")
-    if checkbox_var3.get():
-        checkbox_values.append("sample3")
-    if checkbox_var4.get():
-        checkbox_values.append("sample4")
+class GUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("GUI")
+        self.geometry("400x300")
 
-    data = {
-        "app": "3",
-        "record": {
-            "test1": {"value": input_entry1.get()},
-            "test2": {"value": input_entry2.get()},
-            "number": {"value": int_input_entry.get()},
-            "multiChoice": {"value": checkbox_values},
-        }
-    }
-    post_data(data)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
+        self.frames = {}
 
-def change_frame():
-    global input_entry1, input_entry2, checkbox1, checkbox2, checkbox3, checkbox4, int_input_entry, checkbox_var1, checkbox_var2, checkbox_var3, checkbox_var4
-    for widget in root.winfo_children():
-        widget.destroy()
+        self.create_main_frame()
+        self.create_input()
+        self.create_guess_frame()
 
-    new_frame = tk.Frame(root)
-    
-    checkbox_var1 = tk.IntVar()
-    checkbox_var2 = tk.IntVar()
-    checkbox_var3 = tk.IntVar()
-    checkbox_var4 = tk.IntVar()
+        self.show_frame("main")
+        
+    def create_main_frame(self):
+        main_frame = tk.Frame(self)
+        
+        button1 = tk.Button(main_frame, text="Go to Frame 2", command=lambda: self.show_frame("input_frame"))
+        button1.pack()
+        
+        button2 = tk.Button(main_frame, text="Go to Frame 3", command=lambda: self.show_frame("guessing_frame"))
+        button2.pack()
+        
+        self.frames["main"] = main_frame
+        
+    def create_input(self):
+        input_frame = tk.Frame(self)
+        
+        for i in range(5):  # Create 5 text boxes
+            label = tk.Label(input_frame, text=f"Text Box {i+1}:")
+            label.grid(row=i, column=0)
+            textbox = tk.Entry(input_frame)
+            textbox.grid(row=i, column=1)
 
-    checkbox_label = tk.Label(new_frame, text="Checkboxes:")
-    checkbox_label.pack()
+        confirm_button = tk.Button(input_frame, text="Confirm")
+        confirm_button.grid(row=5, column=0, columnspan=2)
 
-    checkbox1 = tk.Checkbutton(new_frame, text="Checkbox 1", variable=checkbox_var1)
-    checkbox1.pack()
-    checkbox2 = tk.Checkbutton(new_frame, text="Checkbox 2", variable=checkbox_var2)
-    checkbox2.pack()
-    checkbox3 = tk.Checkbutton(new_frame, text="Checkbox 3", variable=checkbox_var3)
-    checkbox3.pack()
-    checkbox4 = tk.Checkbutton(new_frame, text="Checkbox 4", variable=checkbox_var4)
-    checkbox4.pack()
+        back_button = tk.Button(input_frame, text="Back to Main Frame", command=lambda: self.show_frame("main"))
+        back_button.grid(row=6, column=0, columnspan=2)
 
-    int_input_label = tk.Label(new_frame, text="Integer Input:")
-    int_input_label.pack()
-    int_input_entry = tk.Entry(new_frame)
-    int_input_entry.pack()
-    input_label1 = tk.Label(new_frame, text="Input 1:")
-    input_label1.pack()
-    input_entry1 = tk.Entry(new_frame)
-    input_entry1.pack()
+        self.frames["input_frame"] = input_frame
+        
+    def create_guess_frame(self):
+        guessing_frame = tk.Frame(self)
+        
+        label = tk.Label(guessing_frame, text="This is Frame 3")  # Create a label
+        label.pack()  # Pack the label at the top of the frame
+        
+        checkbox1 = tk.Checkbutton(guessing_frame, text="")
+        checkbox1.pack()
+        
+        checkbox2 = tk.Checkbutton(guessing_frame, text="Checkbox 2")
+        checkbox2.pack()
+        
+        checkbox3 = tk.Checkbutton(guessing_frame, text="Checkbox 3")
+        checkbox3.pack()
+        
+        checkbox4 = tk.Checkbutton(guessing_frame, text="Checkbox 4")
+        checkbox4.pack()
+        
+        button = tk.Button(guessing_frame, text="Submit")
+        button.pack()
+        
+        self.frames["guessing_frame"] = guessing_frame
+        
+    def show_frame(self, frame_name):
+        for frame in self.frames.values():
+            frame.grid_remove()  # Hide all frames
+        frame = self.frames[frame_name]
+        frame.grid(row=0, column=0, sticky="nsew")  # Show the desired frame
+        self.update_idletasks()  # Force the window to update
 
-
-    input_label2 = tk.Label(new_frame, text="Input 2:")
-    input_label2.pack()
-    input_entry2 = tk.Entry(new_frame)
-    input_entry2.pack()
-
-    confirm_button = tk.Button(new_frame, text="Confirm2", command=confirm_fields)
-    confirm_button.pack()
-
-    
-
-    back_button = tk.Button(new_frame, text="Back", command=main_frame)
-    back_button.pack()
-
-    new_frame.pack()
-
-def main_frame():
-    global file_path_entry
-    for widget in root.winfo_children():
-        widget.destroy()
-
-    root_frame = tk.Frame(root)
-
-    file_path_label = tk.Label(root_frame, text="File Path:")
-    file_path_label.pack()
-    file_path_entry = tk.Entry(root_frame)
-    file_path_entry.pack()
-
-    confirm_button = tk.Button(root_frame, text="Confirm", command=confirm_file_path)
-    confirm_button.pack()
-
-    change_frame_button = tk.Button(root_frame, text="Change Frame", command=change_frame)
-    change_frame_button.pack()
-
-    root_frame.pack()
-
-root = tk.Tk()
-main_frame()
-root.mainloop()
+if __name__ == "__main__":
+    gui = GUI()
+    gui.mainloop()
