@@ -27,6 +27,25 @@ def check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, checkbo
             correct_answer = question[5]
         print(correct_answer)
 
+def add_question(textbox1, textbox2, textbox3, textbox4, textbox5, textbox6):
+    data = {
+    "app": "3",
+    "record": {
+        "question": {"value": textbox1.get()},
+        "option1": {"value": textbox2.get()},
+        "option2": {"value": textbox3.get()},
+        "option3": {"value": textbox4.get()},
+        "option4": {"value": textbox5.get()},
+        "correct": {"value": textbox6.get()},
+        }
+    }
+    textbox1.delete(0, "end")
+    textbox2.delete(0, "end")
+    textbox3.delete(0, "end")
+    textbox4.delete(0, "end")
+    textbox5.delete(0, "end")
+    textbox6.delete(0, "end")
+    post_data(data)
 
 class GUI(tk.Tk):
     def __init__(self):
@@ -48,10 +67,10 @@ class GUI(tk.Tk):
     def create_main_frame(self):
         main_frame = tk.Frame(self)
         
-        button1 = tk.Button(main_frame, text="Go to Frame 2", command=lambda: self.show_frame("input_frame"))
+        button1 = tk.Button(main_frame, text="Add questions", command=lambda: self.show_frame("input_frame"))
         button1.pack()
         
-        button2 = tk.Button(main_frame, text="Go to Frame 3", command=lambda: self.show_frame("guessing_frame"))
+        button2 = tk.Button(main_frame, text="Quiz", command=lambda: self.show_frame("guessing_frame"))
         button2.pack()
         
         self.frames["main"] = main_frame
@@ -59,17 +78,20 @@ class GUI(tk.Tk):
     def create_input(self):
         input_frame = tk.Frame(self)
         
-        for i in range(5):  # Create 5 text boxes
-            label = tk.Label(input_frame, text=f"Text Box {i+1}:")
+        textboxes = []  # Create a list to store the textboxes
+        text_fields = ["Question", "Option 1", "Option 2", "Option 3", "Option 4", "Correct Answer"]
+        for i in range(6):  # Create 6 text boxes
+            label = tk.Label(input_frame, text=text_fields[i])
             label.grid(row=i, column=0)
             textbox = tk.Entry(input_frame)
             textbox.grid(row=i, column=1)
+            textboxes.append(textbox)  # Add the textbox to the list
 
-        confirm_button = tk.Button(input_frame, text="Confirm")
-        confirm_button.grid(row=5, column=0, columnspan=2)
+        confirm_button = tk.Button(input_frame, text="Confirm", command=lambda: add_question(*textboxes))
+        confirm_button.grid(row=6, column=0, columnspan=2)
 
-        back_button = tk.Button(input_frame, text="Back to Main Frame", command=lambda: self.show_frame("main"))
-        back_button.grid(row=6, column=0, columnspan=2)
+        back_button = tk.Button(input_frame, text="Back to Main", command=lambda: self.show_frame("main"))
+        back_button.grid(row=7, column=0, columnspan=2)
 
         self.frames["input_frame"] = input_frame
         
@@ -100,7 +122,10 @@ class GUI(tk.Tk):
         correct_answer = question[5]
         button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, checkbox1, checkbox2, checkbox3, checkbox4, label))
         button.pack()
-        
+
+        back_button = tk.Button(guessing_frame, text="Back to Main", command=lambda: self.show_frame("main"))
+        back_button.pack()
+
         self.frames["guessing_frame"] = guessing_frame
         
     def show_frame(self, frame_name):
