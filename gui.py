@@ -1,9 +1,22 @@
 import tkinter as tk
 from tkinter import filedialog
 
-from api import parse_csv, post_data
+from api import parse_csv, post_data, get_question
 
 import tkinter as tk
+
+def check_answer(self, checkbox1var, checkbox2var, checkbox3var, checkbox4var, correct_answer):
+        result = False
+        if correct_answer == "A" and checkbox1var.get() == 1:
+            result = True
+        elif correct_answer == "B" and checkbox2var.get() == 1:
+            result = True
+        elif correct_answer == "C" and checkbox3var.get() == 1:
+            result = True
+        elif correct_answer == "D" and checkbox4var.get() == 1:
+            result = True
+        if result:
+            print("Correct!")
 
 class GUI(tk.Tk):
     def __init__(self):
@@ -52,23 +65,29 @@ class GUI(tk.Tk):
         
     def create_guess_frame(self):
         guessing_frame = tk.Frame(self)
+
+        question = get_question()
         
-        label = tk.Label(guessing_frame, text="This is Frame 3")  # Create a label
+        label = tk.Label(guessing_frame, text=question[0])  # Create a label
         label.pack()  # Pack the label at the top of the frame
+        checkbox1var = tk.IntVar()
+        checkbox2var = tk.IntVar()
+        checkbox3var = tk.IntVar()
+        checkbox4var = tk.IntVar()
         
-        checkbox1 = tk.Checkbutton(guessing_frame, text="")
+        checkbox1 = tk.Checkbutton(guessing_frame, text=question[1], variable=checkbox1var)
         checkbox1.pack()
         
-        checkbox2 = tk.Checkbutton(guessing_frame, text="Checkbox 2")
+        checkbox2 = tk.Checkbutton(guessing_frame, text=question[2], variable=checkbox2var)
         checkbox2.pack()
         
-        checkbox3 = tk.Checkbutton(guessing_frame, text="Checkbox 3")
+        checkbox3 = tk.Checkbutton(guessing_frame, text=question[3], variable=checkbox3var)
         checkbox3.pack()
         
-        checkbox4 = tk.Checkbutton(guessing_frame, text="Checkbox 4")
+        checkbox4 = tk.Checkbutton(guessing_frame, text=question[4], variable=checkbox4var)
         checkbox4.pack()
         
-        button = tk.Button(guessing_frame, text="Submit")
+        button = tk.Button(guessing_frame, text="Submit", command=check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, question[5]))
         button.pack()
         
         self.frames["guessing_frame"] = guessing_frame
