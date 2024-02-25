@@ -1,28 +1,68 @@
+import random
 import tkinter as tk
 from tkinter import filedialog
 
 from api import parse_csv, post_data, get_question
 
 import tkinter as tk
-global correct_answer, total_guesses, correct_guesses
+global correct_answer, total_guesses, correct_guesses, limit_questions
 total_guesses = 0
 correct_guesses = 0
 correct_answer = "D"
+limit_questions = 10
 
 def check_answer(selected_option, label, radio_buttons):
     global correct_answer, total_guesses, correct_guesses
     total_guesses += 1
-    result = False
     if correct_answer == selected_option.get():
-        result = True
         correct_guesses += 1
-    if result:
-        question = get_question()
+        question = question_customized()
         label.config(text=question[0])
+        alpha = ["A) ", "B) ", "C) ", "D) "]
         for i in range(4):  # Update the text of the radio buttons
-            radio_buttons[i].config(text=question[i+1])
+            radio_buttons[i].config(text=alpha[i] + question[i+1])
         correct_answer = question[5]
-    print(correct_answer)
+
+def question_customized():
+    global limit_questions
+    if gui.check_vars[0].get() == 0:
+        limit_questions -= 1
+        if limit_questions == 0:
+            gui.end_quiz()
+            limit_questions = 10
+            return
+    data = list(get_question())
+    question = data[0]
+    options = data[1:5]
+    correct = data[5]
+    correct_option = "C"
+
+    if gui.check_vars[2].get() == 1:
+        if data[5] == "A":
+            correct_option = data[1]
+        elif data[5] == "B":
+            correct_option = data[2]
+        elif data[5] == "C":
+            correct_option = data[3]
+        elif data[5] == "D":
+            correct_option = data[4]
+
+        # Randomize the order of the options
+        random.shuffle(options)
+
+        for i in options:
+            if i == correct_option:
+                if options.index(i) == 0:
+                    correct = "A"
+                elif options.index(i) == 1:
+                    correct = "B"
+                elif options.index(i) == 2:
+                    correct = "C"
+                elif options.index(i) == 3:
+                    correct = "D"
+                break
+
+    return (question, *options, correct)
 
 def add_question(textbox1, textbox2, textbox3, textbox4, textbox5, textbox6):
     data = {
@@ -114,9 +154,10 @@ class GUI(tk.Tk):
         selected_option = tk.StringVar()  # Create a variable to store the selected option
 
         radio_buttons = []  # Create a list to store the radio buttons
+        alpha = ["", "A) ", "B) ", "C) ", "D) "]
 
         for i in range(1, 5):  # Create 4 radio buttons
-            radio_button = tk.Radiobutton(guessing_frame, text=question[i], variable=selected_option, value=chr(64 + i))
+            radio_button = tk.Radiobutton(guessing_frame, text=alpha[i] + question[i], variable=selected_option, value=chr(64 + i))
             radio_button.pack(anchor='w')  # Pack the radio button on the left side of the frame
             radio_buttons.append(radio_button)  # Add the radio button to the list
 
@@ -138,9 +179,10 @@ class GUI(tk.Tk):
         quiz_customize_frame = tk.Frame(self)
 
         self.check_vars = []  # Create a list to store the variables for the checkboxes
+        option_text = ["Unlimited questions", "unlimited guesses", "Randomize options", ""]
         for i in range(4):  # Create 4 checkboxes
             check_var = tk.IntVar()  # Create a variable for the checkbox
-            checkbox = tk.Checkbutton(quiz_customize_frame, text=f"Option {i+1}", variable=check_var)
+            checkbox = tk.Checkbutton(quiz_customize_frame, text=option_text[i], variable=check_var)
             checkbox.pack(anchor='w')  # Pack the checkbox on the left side of the frame
             self.check_vars.append(check_var)  # Add the variable to the list
 
