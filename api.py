@@ -45,7 +45,7 @@ def get_data(record_id=None):
             params["id"] = record_id
             response = requests.get(post_endpoint, headers=get_headers, params=params)
         else:
-            response = requests.get(get_all_endpoint, headers=get_headers)
+            response = requests.get(get_all_endpoint, headers=get_headers, params=params)
 
         # Check if request was successful (status code 200)
         if response.status_code == 200:
