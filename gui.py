@@ -4,13 +4,18 @@ from tkinter import filedialog
 from api import parse_csv, post_data, get_question
 
 import tkinter as tk
-global correct_answer
+global correct_answer, total_guesses, correct_guesses
+total_guesses = 0
+correct_guesses = 0
 correct_answer = "D"
+
 def check_answer(selected_option, label, radio_buttons):
-    global correct_answer
+    global correct_answer, total_guesses, correct_guesses
+    total_guesses += 1
     result = False
     if correct_answer == selected_option.get():
         result = True
+        correct_guesses += 1
     if result:
         question = get_question()
         label.config(text=question[0])
@@ -56,9 +61,14 @@ class GUI(tk.Tk):
 
         self.show_frame("main")
         
-    def create_main_frame(self):
+    def create_main_frame(self, label_text=None):
         main_frame = tk.Frame(self)
-        
+
+        if label_text == None:
+            label_text = "Welcome to the Quiz!"
+        self.main_label = tk.Label(main_frame, text=label_text)  # Store the label in an instance variable
+        self.main_label.pack()
+
         button1 = tk.Button(main_frame, text="Add questions", command=lambda: self.show_frame("input_frame"))
         button1.pack()
         
@@ -109,7 +119,7 @@ class GUI(tk.Tk):
         button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(selected_option, label, radio_buttons))
         button.pack()
 
-        back_button = tk.Button(guessing_frame, text="Back to Main", command=lambda: self.show_frame("main"))
+        back_button = tk.Button(guessing_frame, text="End Quiz", command=lambda: self.end_quiz())
         back_button.pack()
 
         self.frames["guessing_frame"] = guessing_frame
@@ -120,6 +130,13 @@ class GUI(tk.Tk):
         frame = self.frames[frame_name]
         frame.grid(row=0, column=0, sticky="nsew")  # Show the desired frame
         self.update_idletasks()  # Force the window to update
+    
+    def end_quiz(self):
+        global total_guesses, correct_guesses
+        self.main_label.config(text=f"You got {correct_guesses} out of {total_guesses} correct!")  # Update the main label
+        total_guesses = 0
+        correct_guesses = 0
+        self.show_frame("main")
 
 if __name__ == "__main__":
     gui = GUI()
