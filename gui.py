@@ -1,6 +1,7 @@
 import random
 import tkinter as tk
 from tkinter import filedialog
+import tkinter.font as font
 
 from api import parse_csv, post_data, get_question, reset_limit_questions
 
@@ -120,26 +121,29 @@ class GUI(tk.Tk):
         
     def create_main_frame(self, label_text=None):
         main_frame = tk.Frame(self)
+        buttonFont = font.Font(family='Courier New', size=16)
 
         if label_text == None:
             label_text = "Welcome to the Kintone Trivia Quiz!"
         self.main_label = tk.Label(main_frame, text=label_text, font=("Courier New", 20))  # Increase the font size
         self.main_label.pack()
 
-        button1 = tk.Button(main_frame, text="Add questions", command=lambda: self.show_frame("input_frame"))
+
+        button1 = tk.Button(main_frame, text="Add questions", font=buttonFont, command=lambda: self.show_frame("input_frame"))
         button1.pack()
         
-        button2 = tk.Button(main_frame, text="Quiz", command=lambda: self.show_frame("guessing_frame"))
+        button2 = tk.Button(main_frame, text="Quiz", font=buttonFont, command=lambda: self.show_frame("guessing_frame"))
         button2.pack()
 
         # Add a button to customize the quiz
-        button3 = tk.Button(main_frame, text="Customize Quiz", command=lambda: self.show_frame("quiz_customize_frame"))
+        button3 = tk.Button(main_frame, text="Customize Quiz", font=buttonFont, command=lambda: self.show_frame("quiz_customize_frame"))
         button3.pack()
 
         self.frames["main"] = main_frame
         
     def create_input(self):
         input_frame = tk.Frame(self)
+        buttonFont = font.Font(family='Courier New', size=16)
         
         textboxes = []  # Create a list to store the textboxes
         text_fields = ["Question", "Option 1", "Option 2", "Option 3", "Option 4", "Correct Answer"]
@@ -151,10 +155,10 @@ class GUI(tk.Tk):
             textboxes.append(textbox)  # Add the textbox to the list
 
 
-        confirm_button = tk.Button(input_frame, text="Confirm", command=lambda: add_question(*textboxes))
+        confirm_button = tk.Button(input_frame, text="Confirm", font=buttonFont, command=lambda: add_question(*textboxes))
         confirm_button.grid(row=6, column=0, columnspan=2)
 
-        back_button = tk.Button(input_frame, text="Back to Main", command=lambda: self.show_frame("main"))
+        back_button = tk.Button(input_frame, text="Back to Main", font=buttonFont, command=lambda: self.show_frame("main"))
         back_button.grid(row=7, column=0, columnspan=2)
 
         self.frames["input_frame"] = input_frame
@@ -162,6 +166,7 @@ class GUI(tk.Tk):
     def create_guess_frame(self):
         global correct_answer
         guessing_frame = tk.Frame(self)
+        buttonFont = font.Font(family='Courier New', size=16)
 
         question = get_question()
         
@@ -175,7 +180,7 @@ class GUI(tk.Tk):
         alpha = ["", "A) ", "B) ", "C) ", "D) "]
 
         for i in range(1, 5):  # Create 4 radio buttons
-            radio_button = tk.Radiobutton(guessing_frame, text=alpha[i] + question[i], variable=selected_option, value=chr(64 + i))
+            radio_button = tk.Radiobutton(guessing_frame, text=alpha[i] + question[i], font = buttonFont, variable=selected_option, value=chr(64 + i))
             radio_button.pack(anchor='w')  # Pack the radio button on the left side of the frame
             radio_buttons.append(radio_button)  # Add the radio button to the list
 
@@ -186,16 +191,17 @@ class GUI(tk.Tk):
         button_frame.pack(anchor='w')
 
         # In the create_guess_frame method
-        button = tk.Button(button_frame, text="Check", command=lambda: check_answer(selected_option, label, radio_buttons, button))
+        button = tk.Button(button_frame, text="Check", font=buttonFont, command=lambda: check_answer(selected_option, label, radio_buttons, button))
         button.pack(side='left')  # Pack the button on the left side of the button frame
 
-        back_button = tk.Button(button_frame, text="End Quiz", command=lambda: self.end_quiz())
+        back_button = tk.Button(button_frame, text="End Quiz", font=buttonFont, command=lambda: self.end_quiz())
         back_button.pack(side='left', padx=5)  # Pack the button on the left side of the button frame with a padding of 5 pixels
 
         self.frames["guessing_frame"] = guessing_frame
 
     def create_quiz_customize(self):
         quiz_customize_frame = tk.Frame(self)
+        buttonFont = font.Font(family='Courier New', size=16)
 
         self.check_vars = []  # Create a list to store the variables for the checkboxes
         option_text = ["Unlimited Questions", "Unlimited Guesses", "Randomize Options", "Unique Questions"]
@@ -205,7 +211,7 @@ class GUI(tk.Tk):
             checkbox.pack(anchor='w')  # Pack the checkbox on the left side of the frame
             self.check_vars.append(check_var)  # Add the variable to the list
 
-        back_button = tk.Button(quiz_customize_frame, text="Back to Main", command=lambda: self.show_frame("main"))
+        back_button = tk.Button(quiz_customize_frame, text="Back to Main", font=buttonFont, command=lambda: self.show_frame("main"))
         back_button.pack()
 
         self.frames["quiz_customize_frame"] = quiz_customize_frame
