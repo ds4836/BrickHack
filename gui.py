@@ -4,8 +4,10 @@ from tkinter import filedialog
 from api import parse_csv, post_data, get_question
 
 import tkinter as tk
-
-def check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, correct_answer):
+global correct_answer
+correct_answer = "D"
+def check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, checkbox1, checkbox2, checkbox3, checkbox4, label):
+        global correct_answer
         result = False
         if correct_answer == "A" and checkbox1var.get() == 1:
             result = True
@@ -16,7 +18,15 @@ def check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, correct
         elif correct_answer == "D" and checkbox4var.get() == 1:
             result = True
         if result:
-            print("Correct!")
+            question = get_question()
+            label.config(text=question[0])
+            checkbox1.config(text=question[1])
+            checkbox2.config(text=question[2])
+            checkbox3.config(text=question[3])
+            checkbox4.config(text=question[4])
+            correct_answer = question[5]
+        print(correct_answer)
+
 
 class GUI(tk.Tk):
     def __init__(self):
@@ -64,6 +74,7 @@ class GUI(tk.Tk):
         self.frames["input_frame"] = input_frame
         
     def create_guess_frame(self):
+        global correct_answer
         guessing_frame = tk.Frame(self)
 
         question = get_question()
@@ -86,8 +97,8 @@ class GUI(tk.Tk):
         
         checkbox4 = tk.Checkbutton(guessing_frame, text=question[4], variable=checkbox4var)
         checkbox4.pack()
-        
-        button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, question[5]))
+        correct_answer = question[5]
+        button = tk.Button(guessing_frame, text="Submit", command=lambda: check_answer(checkbox1var, checkbox2var, checkbox3var, checkbox4var, checkbox1, checkbox2, checkbox3, checkbox4, label))
         button.pack()
         
         self.frames["guessing_frame"] = guessing_frame
