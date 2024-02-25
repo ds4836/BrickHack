@@ -209,10 +209,12 @@ class GUI(tk.Tk):
         self.update_idletasks()  # Force the window to update
     
     def end_quiz(self):
-        global total_guesses, correct_guesses
+        global total_guesses, correct_guesses, limit_questions
         self.main_label.config(text=f"You got {correct_guesses} out of {total_guesses} correct!")  # Update the main label
         total_guesses = 0
         correct_guesses = 0
+        limit_questions = reset_limit_questions()
+
         self.show_frame("main")
 
 if __name__ == "__main__":
